@@ -404,6 +404,7 @@ with tab_actividad:
         st.info("Primero añade un cliente.")
     else:
         opciones = {x["nombre"]: x["id"] for x in clientes_act}
+        nombres_clientes = list(opciones.keys())
         with st.form("nueva_actividad"):
             elegido = st.selectbox("Cliente *", list(opciones.keys()))
             fecha = st.date_input("Fecha", date.today())
