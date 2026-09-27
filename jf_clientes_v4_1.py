@@ -414,13 +414,13 @@ with tab_actividad:
             contacto = st.selectbox("Persona de contacto", ["Selecciona contacto"] + nombres_contactos)
             comentarios = st.text_area("¿Qué habéis hablado?", height=140)
             usar_proxima = st.checkbox("Programar próxima gestión", key="usar_proxima")
-                    if usar_proxima:
+        if usar_proxima:
             proxima = st.date_input("Próxima gestión", date.today())
-        	else:
-                    proxima = None
-            if st.form_submit_button("Guardar actividad", type="primary"):
-                with conn() as c:
-                    c.execute("""INSERT INTO visitas(cliente_id,fecha,tipo,contacto,comentarios,proxima_visita)
+        else:
+            proxima = None
+        if st.form_submit_button("Guardar actividad", type="primary"):
+            with conn() as c:
+                c.execute("""INSERT INTO visitas(cliente_id,fecha,tipo,contacto,comentarios,proxima_visita)
                                  VALUES(?,?,?,?,?,?)""",
                               (opciones[elegido],str(fecha),tipo_visita,contacto,comentarios,
                                str(proxima) if proxima else None))
