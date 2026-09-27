@@ -418,7 +418,7 @@ with tab_actividad:
             proxima = st.date_input("Próxima gestión", date.today())
         else:
             proxima = None
-        if st.form_submit_button("Guardar actividad", type="primary"):
+if st.button("Guardar actividad", type="primary"):
             with conn() as c:
                 c.execute("""INSERT INTO visitas(cliente_id,fecha,tipo,contacto,comentarios,proxima_visita)
                                  VALUES(?,?,?,?,?,?)""",
