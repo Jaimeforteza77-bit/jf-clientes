@@ -414,17 +414,15 @@ with tab_actividad:
             nombres_contactos = [x["nombre"] for x in contactos_cliente]
             contacto = st.selectbox("Persona de contacto", ["Selecciona contacto"] + nombres_contactos)
             comentarios = st.text_area("¿Qué habéis hablado?", height=140)
-            usar_proxima = st.checkbox("Programar próxima gestión", key="usar_proxima")
-        if usar_proxima:
+            usar_proxima = st.checkbox("Programar próxima gestión")
             proxima = st.date_input("Próxima gestión", date.today())
-        else:
-            proxima = None
-if st.button("Guardar actividad", type="primary"):
+        if st.button("Guardar actividad", type="primary"):
             with conn() as c:
                 c.execute("""INSERT INTO visitas(cliente_id,fecha,tipo,contacto,comentarios,proxima_visita)
                                  VALUES(?,?,?,?,?,?)""",
                               (opciones[elegido],str(fecha),tipo_visita,contacto,comentarios,
                                str(proxima) if proxima else None))
+                c.commit()
                 st.session_state.flash = "✅ Actividad guardada correctamente."
                 st.rerun()
 
