@@ -97,6 +97,18 @@ with conn() as c:
         (str(date.today()),)
     ).fetchone()[0]
 
+hoy = str(date.today())
+with conn() as c:
+    proximas = c.execute(
+"SELECT v.id, v.proxima_visita, c.nombre, v.contacto, v.comentarios FROM visitas v JOIN clientes c ON c.id = v.cliente_id WHERE v.proxima_visita IS NOT NULL AND v.proxima_visita >= ? ORDER BY v.proxima_visita",
+(hoy,))
+)
+proximas = proximas.fetchall()
+if proximas:
+	st.success("Tienes próximas gestiones pendientes.")
+for p in proximas:
+    st.write(p)
+
 st.metric("🔴 Gestiones vencidas", gestiones_vencidas)
 st.divider()
 st.subheader("📅 Próximas gestiones")
