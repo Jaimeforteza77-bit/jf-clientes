@@ -183,11 +183,7 @@ with tab_nuevo:
                     if existe:
                         st.error("Ya existe un cliente con ese nombre.")
                     else:
-                        c.execute("""INSERT INTO clientes(nombre,tipo,direccion,poblacion,notas,marcas,facturacion)
-                                     VALUES(?,?,?,?,?,?,?)""",
-                                  (nombre.strip(),tipo,direccion,poblacion,notas,marcas,facturacion))
-                        st.success("Cliente guardado correctamente.")
-
+                        pass
 with tab_clientes:
     buscar = st.text_input("🔎 Buscar cliente")
     with conn() as c:
