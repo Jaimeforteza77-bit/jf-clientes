@@ -3,8 +3,12 @@ import sqlite3
 from datetime import date
 
 st.set_page_config(page_title="JF Clientes", page_icon="📋", layout="wide")
-DB = "jf_clientes.db"
 
+DB = "jf_clientes.db"
+SUPABASE_URL = st.secrets["SUPABASE_URL"]
+SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
+from supabase import create_client
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 def conn():
     c = sqlite3.connect(DB)
     c.row_factory = sqlite3.Row
@@ -184,6 +188,15 @@ with tab_nuevo:
                         st.error("Ya existe un cliente con ese nombre.")
                     else:
                         pass
+            supabase.table("clientes").insert({
+                "nombre": nombre.strip(),
+                "tipo": tipo,
+                "direccion": direccion,
+                "poblacion": poblacion,
+                "marcas": marcas,
+                "notas": notas,
+            }).execute()
+            st.success("Cliente guardado correctamente")
 with tab_clientes:
     buscar = st.text_input("🔎 Buscar cliente")
     with conn() as c:
