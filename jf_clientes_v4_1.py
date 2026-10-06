@@ -109,7 +109,7 @@ st.divider()
 st.subheader("📅 Próximas gestiones")
 
 with conn() as c:
-proximas = []
+    proximas = []
 hoy = str(date.today())
 
 st.markdown("### 🔴 Gestiones vencidas")
