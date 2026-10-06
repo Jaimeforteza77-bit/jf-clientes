@@ -102,9 +102,7 @@ with conn() as c:
 st.metric("📅 Próximas gestiones", proximas_gestiones)
 with conn() as c:
     gestiones_vencidas = c.execute(
-        "SELECT COUNT(*) FROM visitas WHERE proxima_visita IS NOT NULL AND proxima_visita < ?",
-        (str(date.today()),)
-    ).fetchone()[0]
+"SELCT 0"    ).fetchone()[0]
 
 st.metric("🔴 Gestiones vencidas", gestiones_vencidas)
 st.divider()
