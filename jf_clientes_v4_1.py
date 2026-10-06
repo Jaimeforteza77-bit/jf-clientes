@@ -97,8 +97,7 @@ with tab_resumen:
 st.metric("💰 Facturación total", f"{facturacion_total:,.2f} €")
 with conn() as c:
     proximas_gestiones = c.execute(
-        "SELECT COUNT(*) FROM visitas WHERE proxima_visita IS NOT NULL"
-    ).fetchone()[0]
+"SELECT COUNT(*) FROM visitas"    ).fetchone()[0]
 
 st.metric("📅 Próximas gestiones", proximas_gestiones)
 with conn() as c:
