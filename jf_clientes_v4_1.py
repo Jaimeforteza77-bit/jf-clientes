@@ -109,15 +109,7 @@ st.divider()
 st.subheader("📅 Próximas gestiones")
 
 with conn() as c:
-    proximas = c.execute("""
-        SELECT v.id, v.proxima_visita, c.nombre, v.contacto, v.comentarios
-        FROM visitas v
-        JOIN clientes c ON c.id = v.cliente_id
-        WHERE v.proxima_visita IS NOT NULL
-        ORDER BY v.proxima_visita ASC
-        LIMIT 10
-    """).fetchall()
-
+proximas = []
 hoy = str(date.today())
 
 st.markdown("### 🔴 Gestiones vencidas")
