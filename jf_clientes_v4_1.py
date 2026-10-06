@@ -102,7 +102,7 @@ with conn() as c:
 st.metric("📅 Próximas gestiones", proximas_gestiones)
 with conn() as c:
     gestiones_vencidas = c.execute(
-"SELCT 0"    ).fetchone()[0]
+"SELECT 0"    ).fetchone()[0]
 
 st.metric("🔴 Gestiones vencidas", gestiones_vencidas)
 st.divider()
