@@ -1,5 +1,9 @@
 import streamlit as st
+from supabase import create_client
 import sqlite3
+SUPABASE_URL = st.secrets["SUPABASE_URL"]
+SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
+Supabase = create_client(SUPABASE_URL,SUPABASE_KEY)
 from datetime import date
 
 st.set_page_config(page_title="JF Clientes", page_icon="📋", layout="wide")
@@ -42,8 +46,7 @@ def init_db():
             fecha TEXT NOT NULL,
             tipo TEXT,
             contacto TEXT,
-            comentarios TEXT,
-            proxima_visita TEXT
+            comentarios TEXT
         );
         CREATE TABLE IF NOT EXISTS facturacion_marca(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -51,6 +54,9 @@ def init_db():
             anio INTEGER NOT NULL,
             marca TEXT NOT NULL,
             importe REAL NOT NULL DEFAULT 0,
+fecha TEXT NOT NULL,
+comentario TEXT,
+
             UNIQUE(cliente_id, anio, marca)
         );
         """)
@@ -199,15 +205,14 @@ with tab_nuevo:
             st.success("Cliente guardado correctamente")
 with tab_clientes:
     buscar = st.text_input("🔎 Buscar cliente")
-    with conn() as c:
-        clientes = c.execute("SELECT * FROM clientes ORDER BY nombre").fetchall()
-    if buscar:
+clientes = Supabase.table("clientes").select("*").order("nombre").execute().data
+if buscar:
         clientes = [x for x in clientes if buscar.lower() in x["nombre"].lower()]
 
-    if not clientes:
+if not clientes:
         st.info("No hay clientes.")
 
-    for cl in clientes:
+for cl in clientes:
         with st.expander(f'{cl["nombre"]} · {cl["tipo"] or ""}'):
             st.markdown("### Ficha del cliente")
             c1,c2,c3 = st.columns(3)
