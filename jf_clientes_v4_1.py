@@ -429,41 +429,14 @@ with tab_actividad:
                 st.session_state.flash = "✅ Actividad guardada correctamente."
                 st.rerun()
 
-with tab_proximas:
-    st.subheader("📅 Próximas gestiones")
-    with conn() as c:
-        proximas = c.execute("""
-            SELECT visitas.*, clientes.nombre AS cliente_nombre
-            FROM visitas
-            JOIN clientes ON visitas.cliente_id = clientes.id
-            WHERE visitas.proxima_visita IS NOT NULL
-            ORDER BY visitas.proxima_visita
-        """).fetchall()
-    if not proximas:
-        st.info("No hay próximas gestiones programadas.")
-    else:
-        for p in proximas:
-            fecha_gestion = date.fromisoformat(p["proxima_visita"])
-        if fecha_gestion < date.today():
-            estado = "🔴 VENCIDA"
-        elif fecha_gestion == date.today():
-            estado = "🟠 HOY"
-        else:
-            estado = "🟢 PRÓXIMA"
-            st.write(f"{estado} · 📅 **{p['proxima_visita']} · {p['cliente_nombre']}** · {p['tipo']} · {p['contacto'] or 'Sin contacto'}")
-            st.write(p["comentarios"] or "Sin comentarios")
-            col1, col2 = st.columns(2)
+                with conn() as c:
+                            c.execute(
+                                "UPDATE visitas SET proxima_visita=NULL WHERE id=?",
+                                (p["id"],)
+                            )
+                        st.rerun()
 
-            with col1:
-                        if st.button("✅ Hecho", key=f"hecho_{p['id']}"):
-                            with conn() as c:
-                                c.execute(
-                                    "UPDATE visitas SET proxima_visita=NULL WHERE id=?",
-                                    (p["id"],)
-                                )
-                            st.rerun()
-
-            with col2:
+                with col2:
                         nueva_fecha = st.date_input(
                             "📅 Aplazar hasta",
                             value=fecha_gestion,
