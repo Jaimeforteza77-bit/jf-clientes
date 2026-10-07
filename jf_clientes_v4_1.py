@@ -401,9 +401,7 @@ for cl in clientes:
                 st.divider()
 
 with tab_actividad:
-    with conn() as c:
-        clientes_act = c.execute("SELECT * FROM clientes ORDER BY nombre").fetchall()
-    if not clientes_act:
+clientes_act = supabase.table("clientes").select("*").order("nombre").execute().data    if not clientes_act:
         st.info("Primero añade un cliente.")
     else:
         opciones = {x["nombre"]: x["id"] for x in clientes_act}
