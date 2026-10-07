@@ -417,8 +417,12 @@ else:
             contacto = st.selectbox("Persona de contacto", ["Selecciona contacto"] + nombres_contactos)
             comentarios = st.text_area("¿Qué habéis hablado?", height=140)
             usar_proxima = st.checkbox("Programar próxima gestión", key="usar_proxima")
-            proxima = st.date_input("Próxima gestión", date.today())
-        if st.button("Guardar actividad", type="primary"):
+
+ proxima = None          
+
+if usar_proxima:
+     proxima = st.date_input("Próxima gestión", date.today())
+    if st.button("Guardar actividad", type="primary"):
             with conn() as c:
                 c.execute("""INSERT INTO visitas(cliente_id,fecha,tipo,contacto,comentarios,proxima_visita)
                                  VALUES(?,?,?,?,?,?)""",
