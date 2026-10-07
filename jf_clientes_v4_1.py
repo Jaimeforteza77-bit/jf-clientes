@@ -434,7 +434,6 @@ with tab_actividad:
                                 "UPDATE visitas SET proxima_visita=NULL WHERE id=?",
                                 (p["id"],)
                             )
-                        st.rerun()
 
                 with col2:
                         nueva_fecha = st.date_input(
