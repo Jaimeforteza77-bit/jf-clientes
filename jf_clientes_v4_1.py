@@ -418,17 +418,16 @@ else:
             comentarios = st.text_area("¿Qué habéis hablado?", height=140)
             usar_proxima = st.checkbox("Programar próxima gestión", key="usar_proxima")
 
- proxima = None          
-
-if usar_proxima:
-     proxima = st.date_input("Próxima gestión", date.today())
-    if st.button("Guardar actividad", type="primary"):
-            with conn() as c:
-                c.execute("""INSERT INTO visitas(cliente_id,fecha,tipo,contacto,comentarios,proxima_visita)
+        proxima = None
+        if usar_proxima:
+         proxima = st.date_input("Próxima gestión", date.today())
+        if st.button("Guardar actividad", type="primary"):
+                with conn() as c:
+                    c.execute("""INSERT INTO visitas(cliente_id,fecha,tipo,contacto,comentarios,proxima_visita)
                                  VALUES(?,?,?,?,?,?)""",
                               (opciones[elegido],str(fecha),tipo_visita,contacto,comentarios,
                                str(proxima) if proxima else None))
-                c.commit()
+                    c.commit()
                 st.session_state.flash = "✅ Actividad guardada correctamente."
                 st.rerun()
 
@@ -451,5 +450,4 @@ if usar_proxima:
                                     (str(nueva_fecha), p["id"])
                                 )
                             st.rerun()
-
-    st.divider()
+st.divider()
